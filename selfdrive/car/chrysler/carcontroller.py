@@ -9,7 +9,7 @@ from openpilot.selfdrive.car.chrysler import chryslercan
 from openpilot.selfdrive.car.chrysler.values import RAM_CARS, RAM_DT, CarControllerParams, ChryslerFlags, ChryslerFlagsSP
 from openpilot.selfdrive.car.interfaces import CarControllerBase, FORWARD_GEARS
 from openpilot.selfdrive.controls.lib.drive_helpers import FCA_V_CRUISE_MIN
-from common.op_params import opParams, MIN_ENABLE_SPEED, MIN_STEER_SPEED, STEER_DELTA_UP, STEER_DELTA_DOWN
+from common.op_params import opParams, STEER_DELTA_UP, STEER_DELTA_DOWN
 ButtonType = car.CarState.ButtonEvent.Type
 
 
@@ -74,9 +74,6 @@ class CarController(CarControllerBase):
       self.v_cruise_min = FCA_V_CRUISE_MIN[CS.params_list.is_metric] * (CV.KPH_TO_MPH if not CS.params_list.is_metric else 1)
 
     can_sends = []
-
-    self.CP.minSteerSpeed = self.op_params.get(MIN_STEER_SPEED) * CV.KPH_TO_MS
-    self.CP.minEnableSpeed = self.op_params.get(MIN_ENABLE_SPEED) * CV.KPH_TO_MS
 
     if not self.CP.pcmCruiseSpeed:
       if not self.last_speed_limit_sign_tap_prev and CS.params_list.last_speed_limit_sign_tap:

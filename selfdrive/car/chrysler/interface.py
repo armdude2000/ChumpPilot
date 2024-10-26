@@ -5,6 +5,7 @@ from openpilot.selfdrive.car import create_button_events, get_safety_config
 from openpilot.selfdrive.car.chrysler.values import CAR, RAM_HD, RAM_DT, RAM_CARS, ChryslerFlags, ChryslerFlagsSP
 from openpilot.selfdrive.car.interfaces import CarInterfaceBase
 from common.conversions import Conversions as CV
+from common.op_params import opParams, MIN_ENABLE_SPEED, MIN_STEER_SPEED
 
 ButtonType = car.CarState.ButtonEvent.Type
 EventName = car.CarEvent.EventName
@@ -94,6 +95,8 @@ class CarInterface(CarInterfaceBase):
 
   def _update(self, c):
     ret = self.CS.update(self.cp, self.cp_cam)
+    self.CP.minSteerSpeed = self.op_params.get(MIN_STEER_SPEED) * CV.KPH_TO_MS
+    self.CP.minEnableSpeed = self.op_params.get(MIN_ENABLE_SPEED) * CV.KPH_TO_MS
 
     self.CS.button_events = [
       *self.CS.button_events,
